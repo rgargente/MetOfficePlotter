@@ -1,17 +1,15 @@
 '''
 Created on Oct 6, 2015
 
-@author: rafa
+@author: rgargente@gmail.com
 '''
 
 import metoffice_downloader
 import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
-    data = metoffice_downloader.get_data()
-    
+    metdata = metoffice_downloader.get_data()
+    metdata.plot_rain_by_year()
+    data = metdata.plot_rain_by_year()
     years = data[0]
-    tmax = data[2]
-    
-    plt.plot(years, tmax)
-    plt.show()
+    rain = data[1]
