@@ -4,9 +4,11 @@ Created on Oct 20, 2015
 @author: rgargente@gmail.com
 '''
 
-import numpy as np
-from numpy import ndarray
+from Bio.Statistics.lowess import lowess
+
 import matplotlib.pyplot as plt
+import numpy as np
+
 
 class MetData:
     '''
@@ -45,11 +47,13 @@ class MetData:
         return (years, rains)
     
     def plot_rain_by_year(self):
+        # Get data
         data = self.get_rain_totals()
-        years = data[0]
+        years = np.asarray(data[0]).astype(np.float)
         x_pos = np.arange(len(years))
-        rain = data[1]
-
+        rain = np.asarray(data[1])
+        
+        # Plot bars
         plt.bar(x_pos, rain, align='center', alpha=0.4)
         plt.xticks(x_pos, years)
         plt.tick_params(
@@ -58,6 +62,15 @@ class MetData:
             bottom='off',
             top='off')
         plt.xlabel('Rain')
+        
+        # Plot average
+        avg = np.average(rain)
+        plt.axhline(avg)
+        
+        # Plot trend line
+        l = lowess(years, rain, f=0.5)
+        plt.plot(l, linestyle='--')
+        
         plt.title('Total rain in London per year')
         plt.show()
         
